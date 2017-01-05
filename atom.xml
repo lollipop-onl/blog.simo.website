@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hello New World</title>
+  <subtitle>はじめまして、あたらしいセカイ</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://simo.website/"/>
+  <updated>2017-01-05T07:48:50.006Z</updated>
+  <id>http://simo.website/</id>
+  
+  <author>
+    <name>simochee</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HexoのMarkdownを拡張する</title>
+    <link href="http://simo.website/post/hexo-my-tag-plugin/"/>
+    <id>http://simo.website/post/hexo-my-tag-plugin/</id>
+    <published>2017-01-05T00:00:00.000Z</published>
+    <updated>2017-01-05T07:48:50.006Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h1><p>Markdownって文書が簡潔に書けて便利ですよね。</p>
+<p>Hexoには、このMarkdownを拡張する<em>タグ</em>というものがあります。</p>
+<p>標準でもいくつか用意されていますが、今回はありそうでなかったリンク付き画像のタグを作ってみます。</p>
+<p class="page-link"><a href="https://hexo.io/docs/tag-plugins.html" target="_blank"><span class="title">Tag Plugins</span><span class="author">Hexo</span></a></p>
+<h2 id="タグの使い方"><a href="#タグの使い方" class="headerlink" title="タグの使い方"></a>タグの使い方</h2><p>自作する前に、用意されているタグを使ってみましょう。</p>
+<p>では、Markdownだと面倒な新しいタブで開くリンクを実装できるタグを利用してみましょう</p>
+<p>記事のMarkdownファイルに次のコードを書いてみてください。</p>
+<figure class="highlight ada"><figcaption><span>link.md</span><a href="https://hexo.io/docs/tag-plugins.html#Link" target="_blank" rel="external">Reference</a></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% link http://simo.website <span class="literal">true</span> Hello <span class="keyword">New</span> World %&#125;</div></pre></td></tr></table></figure>
+<p>すると、生成されたファイルには次のように書き出されます。</p>
+<figure class="highlight xml"><figcaption><span>書き出し</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://simo.website"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span>Hello New World<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>また、ソースコードを掲載したければ、</p>
+<figure class="highlight django"><figcaption><span>codeblock.md</span><a href="https://hexo.io/docs/tag-plugins.html#Code-Block" target="_blank" rel="external">Reference</a></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="xml"></span><span class="template-tag">&#123;% <span class="name">codeblock</span> 書き出し %&#125;</span><span class="xml"></span></div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://simo.website"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span>Hello New World<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line"><span class="template-tag">&#123;% <span class="name">endcodeblock</span> %&#125;</span><span class="xml"></span></div></pre></td></tr></table></figure>
+<p>とすれば、先ほどの出力例のようにハイライトされて書き出されます。</p>
+<p>他にもYoutube動画やGistを埋め込んでくれるタグも用意されています。</p>
+<p class="page-link"><a href="https://hexo.io/docs/tag-plugins.html" target="_blank"><span class="title">Tag Plugins</span><span class="author">Hexo</span></a></p>
+<h1 id="タグを自作する"><a href="#タグを自作する" class="headerlink" title="タグを自作する"></a>タグを自作する</h1><p><img src="eyecatch.png" alt="My Tag"></p>
+<h2 id="作るもの"><a href="#作るもの" class="headerlink" title="作るもの"></a>作るもの</h2><p>今回は、リンク付きの画像を書き出してくれる<code>anchorImage</code>タグを作ってみます。<br>引数は、<code>画像のパス</code>、<code>リンク</code>でリンクが省略された場合は画像を開くようにします。</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% <span class="built_in">anchor</span>Image path [link] %&#125;</div></pre></td></tr></table></figure>
+<h2 id="スクリプトを置くところ"><a href="#スクリプトを置くところ" class="headerlink" title="スクリプトを置くところ"></a>スクリプトを置くところ</h2><p>まずはじめに、任意の名前のJavaScriptファイルを<code>/path/to/hexo/themes/my-theme/scripts</code>に置きます。</p>
+<p>ここでは、<code>anchor-image.js</code>とします。</p>
+<h2 id="構文"><a href="#構文" class="headerlink" title="構文"></a>構文</h2><p>タグは以下の構文で作ることができます。</p>
+<figure class="highlight delphi"><figcaption><span>構文</span><a href="https://hexo.io/api/tag.html" target="_blank" rel="external">Reference</a></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo.extend.tag.<span class="keyword">register</span>(<span class="keyword">name</span>, <span class="function"><span class="keyword">function</span><span class="params">(args, content)</span> <span class="comment">&#123;</span></span></div><div class="line">    // 処理</div><div class="line">&#125;, <span class="title">options</span>);</div></pre></td></tr></table></figure>
+<ul>
+<li><code>name</code>はタグの名前です（今回は<code>anchorImage</code>）。記述は</li>
+<li>引数の<code>args</code>は、<code>{%  %}</code>の中に書かれる引数がスペースのところで区切られた配列で渡されます。</li>
+<li><code>content</code>は、タグで囲まれた中身がそのまま渡されます。</li>
+<li>最後の<code>options</code>は、閉じタグが必要かなどのオプションを設定します（ここでは触れません）。</li>
+</ul>
+<p>この辺の詳しいことはドキュメントで確認してください。</p>
+<p class="page-link"><a href="https://hexo.io/api/tag.html" target="_blank"><span class="title">Tag API</span><span class="author">Hexo</span></a></p>
+<h2 id="コーディング"><a href="#コーディング" class="headerlink" title="コーディング"></a>コーディング</h2><p>それでは、構文に当てはめてタグを作っていきましょう。</p>
+<figure class="highlight pf"><figcaption><span>anchor-image.js</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo.extend.<span class="keyword">tag</span>.register('<span class="built_in">anchor</span>Image', function(args) &#123;</div><div class="line">    </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>これで、雛形ができました。<br>今回の場合、<code>args</code>は<code>[ path, link (optional) ]</code>となります。</p>
+<p>では、引数を変数に入れておきましょう。</p>
+<figure class="highlight actionscript"><figcaption><span>anchor-image.js</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hexo.extend.tag.register(<span class="string">'anchorImage'</span>, <span class="function"><span class="keyword">function</span><span class="params">(args)</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> path = args[<span class="number">0</span>];</div><div class="line">    <span class="keyword">var</span> link = args[<span class="number">1</span>] || path;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>最後に、書き出したいHTMLを返却させます。</p>
+<figure class="highlight actionscript"><figcaption><span>anchor-image.js</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hexo.extend.tag.register(<span class="string">'anchorImage'</span>, <span class="function"><span class="keyword">function</span><span class="params">(args)</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> path = args[<span class="number">0</span>];</div><div class="line">    <span class="keyword">var</span> link = args[<span class="number">1</span>] || path;</div><div class="line">    <span class="keyword">return</span> <span class="string">'&lt;a href="'</span> + link + <span class="string">'"&gt;&lt;img src="'</span> + path + <span class="string">'"&gt;&lt;/a&gt;'</span>;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>これでタグは完成です。</p>
+<h2 id="使ってみる"><a href="#使ってみる" class="headerlink" title="使ってみる"></a>使ってみる</h2><p>では、作ったタグを使ってみましょう。<br>特にHexoに登録したりという手順は必要ありません。</p>
+<figure class="highlight markdown"><figcaption><span>anchor-image.md</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% anchorImage /images/picture.png %&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight stylus"><figcaption><span>書き出し</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">a</span> href=<span class="string">"/images/picture.png"</span>&gt;&lt;<span class="selector-tag">img</span> src=<span class="string">"/images/picture.png"</span>&gt;&lt;/a&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight markdown"><figcaption><span>anchor-image.md</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% anchorImage /images/logo.png http://simo.website %&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight stylus"><figcaption><span>書き出し</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">a</span> href=<span class="string">"http://simo.website"</span>&gt;&lt;<span class="selector-tag">img</span> src=<span class="string">"/images/picture.png"</span>&gt;&lt;/a&gt;</div></pre></td></tr></table></figure>
+<h1 id="おわりに"><a href="#おわりに" class="headerlink" title="おわりに"></a>おわりに</h1><p>Hexoは簡単にMarkdownが拡張できるので、たとえば広告を記事に貼り付けたり、使い方次第ではギャラリーを実装したりすることもできるでしょう。</p>
+<p>また、Node.jsが使えるので、<code>fs</code>を使ってファイルを参照したり、データベースにアクセスしたりすることもできます。</p>
+<p>みなさんもよく使うパーツをタグにして手間を省いてみませんか？</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Markdown&quot;&gt;&lt;a href=&quot;#Markdown&quot; class=&quot;headerlink&quot; title=&quot;Markdown&quot;&gt;&lt;/a&gt;Markdown&lt;/h1&gt;&lt;p&gt;Markdownって文書が簡潔に書けて便利ですよね。&lt;/p&gt;
+&lt;p&gt;Hexoには、このMar
+    
+    </summary>
+    
+      <category term="Webその他" scheme="http://simo.website/categories/Web%E3%81%9D%E3%81%AE%E4%BB%96/"/>
+    
+    
+      <category term="Hexo" scheme="http://simo.website/tags/Hexo/"/>
+    
+      <category term="Tag Plugins" scheme="http://simo.website/tags/Tag-Plugins/"/>
+    
+      <category term="Markdown" scheme="http://simo.website/tags/Markdown/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>〔GIMP入門#1〕無料のグラフィックソフト「GIMP」を使って画像編集入門！</title>
+    <link href="http://simo.website/post/lets-start-gimp-01/"/>
+    <id>http://simo.website/post/lets-start-gimp-01/</id>
+    <published>2017-01-03T00:00:00.000Z</published>
+    <updated>2017-01-02T15:44:39.092Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h1><p>Web関連で紹介されているグラフィックソフトはPhotoshopなどの有償のものが主流となっています。</p>
+<p>ですが、これらのソフトは値段が高くてなかなか手に入れることが難しい方もいらっしゃるでしょう。</p>
+<p>そんな方へ、有償ソフトにも引けを取らない完全無料で使える <strong>GIMP</strong> をご紹介していきます。</p>
+<p><img src="eyecatch.png" alt="GIMP入門１"></p>
+<h2 id="今回の内容"><a href="#今回の内容" class="headerlink" title="今回の内容"></a>今回の内容</h2><p>この記事では、<em>GIMPとは</em>から<em>インストール</em>、<em>起動</em>までをご紹介します。</p>
+<h1 id="GIMPとは"><a href="#GIMPとは" class="headerlink" title="GIMPとは"></a>GIMPとは</h1><p>GIMP（GNU Image Manipulation Program）は様々なOSで利用できるオープンソースの画像編集・加工ソフトです。</p>
+<blockquote><p>GIMPは、Windows、OS X、LinuxなどのOSで使用できるクロスプラットフォームの画像エディタです。このソフトはフリーウェアで、ソースコードを改変・公開することができます。<br>GIMPは、グラフィックデザイナー・フォトグラファー・イラストレーター・科学者、いずれであっても仕事を効率化するための高度なツールを提供します。多くのカスタマイズオプションとサードパーティのプラグインにより、生産性をさらに向上させることができます。</p>
+<footer><strong>公式サイトより</strong><cite><a href="https://www.gimp.org/" target="_blank" rel="external">www.gimp.org</a></cite></footer></blockquote>
+<h1 id="インストール"><a href="#インストール" class="headerlink" title="インストール"></a>インストール</h1><p>さて、GIMPをインストールしてみましょう。<br>ご利用中のOSに合わせてインストールしてください。</p>
+<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><p>ここでは、2017年1月2日時点のインストール方法をご紹介します。</p>
+<h3 id="ダウンロード"><a href="#ダウンロード" class="headerlink" title="ダウンロード"></a>ダウンロード</h3><p>まず、公式サイトにアクセスします。</p>
+<a href="https://www.gimp.org/" target="_blank" rel="external">GIMP - GNU Image Manipulation Program</a>
+<p>つづいて、ダウンロードページへ移動します。</p>
+<p><img src="windows/website-index.png" alt="GIMPの公式サイト"></p>
+<p>ダウンロードページの<em>Download GIMP 2.8.18 directly</em>からインストーラをダウンロードします。<br>（2.8.18は現在のバージョンです）</p>
+<p><img src="windows/website-download.png" alt="GIMPダウロードページ"></p>
+<p><code>gimp-2.8.18-setup.exe</code>というファイルがダウンロードできました！</p>
+<h3 id="インストール-1"><a href="#インストール-1" class="headerlink" title="インストール"></a>インストール</h3><p>それでは、ダウンロードしたファイルを実行してGIMPをインストールしていきましょう。</p>
+<p>はじめに表示される言語の設定はインストーラだけなのでEnglishでいいでしょう。</p>
+<p>つづいて、おしゃれな画面が表示されます。</p>
+<p><code>Customize</code>を選択すると、規約の確認やインストール先の変更などができますが、特に気にしない場合は<code>Install</code>を押してインストールを始めてください。</p>
+<p><img src="windows/installer_start.png" alt="インストーラ初期画面"></p>
+<p>インストール中…</p>
+<p><img src="windows/installer_progress.png" alt="インストール中"></p>
+<p>以下の画面になればインストールは終了です！<code>Finish</code>を押してウィンドウを閉じてください。</p>
+<p><img src="windows/installer_complete.png" alt="インストール完了"></p>
+<p>以上でインストールは完了です！<a href="#GIMPを起動する">GIMPを起動</a>に移動してください。</p>
+<h2 id="OS-X"><a href="#OS-X" class="headerlink" title="OS X"></a>OS X</h2><p>準備中</p>
+<h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p>準備中</p>
+<h1 id="GIMPを起動する"><a href="#GIMPを起動する" class="headerlink" title="GIMPを起動する"></a>GIMPを起動する</h1><p>スタートメニューなどからGIMPを起動してください。<br>（画像ははWindows）</p>
+<p><img src="gimp_startmenu.png" alt="スタートアップのGIMPアイコン"></p>
+<p>起動すると、以下のようにウィンドウが３つ開くかと思います。</p>
+<p><img src="gimp_startup.png" alt="GIMP起動画面"></p>
+<h2 id="パネルを一つにまとめる"><a href="#パネルを一つにまとめる" class="headerlink" title="パネルを一つにまとめる"></a>パネルを一つにまとめる</h2><p>この画面のまま作業しても構いませんが、個人的にはドッグ（右とか左のやつ）がバラバラだと使いづらいので、こいつらを一つのウィンドウにまとめます。</p>
+<p>真ん中のウィンドウ上部のツールバーで<code>ウィンドウ &gt; シングルウィンドウモード</code>を選択します。</p>
+<p><img src="gimp_singlewindow_setup.png" alt="GIMPをシングルウィンドウにする"></p>
+<p>すると、以下のようにGIMPがシングルウィンドウモードとなります。</p>
+<p><img src="gimp_singlewindow.png" alt="シングルウィンドウ"></p>
+<p>今後、このブログではシングルウィンドウモードで解説していきます。</p>
+<h1 id="おわりに＆次回"><a href="#おわりに＆次回" class="headerlink" title="おわりに＆次回"></a>おわりに＆次回</h1><p>今回は、GIMPのインストールと起動をご説明しました。</p>
+<p>次回は、GIMPでらくがきしながら基本的な機能を使っていきます！</p>
+<p><strong>次回リンク</strong></p>
+<p><del>〔GIMP入門#2〕GIMPでらくがきしてみよう！</del> 【準備中】</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;はじめに&quot;&gt;&lt;a href=&quot;#はじめに&quot; class=&quot;headerlink&quot; title=&quot;はじめに&quot;&gt;&lt;/a&gt;はじめに&lt;/h1&gt;&lt;p&gt;Web関連で紹介されているグラフィックソフトはPhotoshopなどの有償のものが主流となっています。&lt;/p&gt;
+&lt;p&gt;ですが
+    
+    </summary>
+    
+      <category term="GIMP" scheme="http://simo.website/categories/GIMP/"/>
+    
+    
+      <category term="GIMP" scheme="http://simo.website/tags/GIMP/"/>
+    
+      <category term="連載：GIMP入門" scheme="http://simo.website/tags/%E9%80%A3%E8%BC%89%EF%BC%9AGIMP%E5%85%A5%E9%96%80/"/>
+    
+      <category term="グラフィック" scheme="http://simo.website/tags/%E3%82%B0%E3%83%A9%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF/"/>
+    
+      <category term="連載" scheme="http://simo.website/tags/%E9%80%A3%E8%BC%89/"/>
+    
+      <category term="Hello World" scheme="http://simo.website/tags/Hello-World/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JavaScriptで今年の経過日数を取得する</title>
+    <link href="http://simo.website/post/js-get-day-of-year/"/>
+    <id>http://simo.website/post/js-get-day-of-year/</id>
+    <published>2017-01-01T00:00:00.000Z</published>
+    <updated>2017-01-01T00:53:16.654Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="はじめに"><a href="#はじめに" class="headerlink" title="はじめに"></a>はじめに</h2><p>このブログを作る過程で、<em>今日が今年の何日目か</em>を取得しないといけなくなりました。</p>
+<p>今日（元旦）とかなら調べるまでもありませんが、JavaScriptだとそうもいきません。</p>
+<p>基本的に日付の操作はmoment.jsを使いたいですが、これだけのために導入するのはオーバースペックです。</p>
+<p>ということで、今回はそれっぽいのを作る過程をご紹介します。</p>
+<h2 id="デモ"><a href="#デモ" class="headerlink" title="デモ"></a>デモ</h2><iframe scrolling="no" width="100%" height="300" src="http://jsfiddle.net/0ngd74m2/embedded/result,html,js/light" frameborder="0" allowfullscreen></iframe>
+<h2 id="ソースコード"><a href="#ソースコード" class="headerlink" title="ソースコード"></a>ソースコード</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> getDayOfYear = <span class="function">(<span class="params">opts_date, opts_month, opts_year</span>) =&gt;</span> &#123;</div><div class="line">    <span class="comment">// 今現在</span></div><div class="line">    <span class="keyword">const</span> now = <span class="keyword">new</span> <span class="built_in">Date</span>;</div><div class="line">    <span class="comment">// 引数がなければ今年の西暦を設定</span></div><div class="line">    <span class="keyword">const</span> year = opts_year || now.getFullYear();</div><div class="line">    <span class="keyword">const</span> month = opts_month || now.getMonth() + <span class="number">1</span>;</div><div class="line">    <span class="keyword">const</span> date = opts_date || now.getDate();</div><div class="line">    <span class="keyword">const</span> begin = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">`<span class="subst">$&#123;year&#125;</span>-01-01 00:00:00`</span>);</div><div class="line">    <span class="keyword">const</span> end = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">`<span class="subst">$&#123;year&#125;</span>-<span class="subst">$&#123;month&#125;</span>-<span class="subst">$&#123;date&#125;</span> 00:00:00`</span>);</div><div class="line">    <span class="comment">// 現在時刻とのミリ秒の差分</span></div><div class="line">    <span class="keyword">const</span> diff = end - begin;</div><div class="line">    <span class="comment">// ミリ秒を日数に変換</span></div><div class="line">    <span class="keyword">const</span> days = <span class="built_in">Math</span>.floor(diff / (<span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>)) + <span class="number">1</span>;</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> days;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="簡単に解説"><a href="#簡単に解説" class="headerlink" title="簡単に解説"></a>簡単に解説</h3><p>この関数は、年月日を指定すると、その日がその年の何日目かを計算します。</p>
+<p>していることは簡単で、今年の1月1日0時0分0秒から指定日の0時0分0秒がどれだけ離れているかを<code>end - begin</code>でミリ秒で計算します。<br>あとは、計算結果を日に直すために１日のミリ秒（<code>24 * 60 * 60 * 1000</code>）で割ってあげればいいだけです。</p>
+<p>引数は大きな部分を省略できるように、日・月・年の順番になっているところに注意してください。<br>すべての引数を省略したら、今日が今年の何日目かを調べることができます。</p>
+<p>せっかくデモを作ったのに引数全省略とは・・・(^_^;)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;はじめに&quot;&gt;&lt;a href=&quot;#はじめに&quot; class=&quot;headerlink&quot; title=&quot;はじめに&quot;&gt;&lt;/a&gt;はじめに&lt;/h2&gt;&lt;p&gt;このブログを作る過程で、&lt;em&gt;今日が今年の何日目か&lt;/em&gt;を取得しないといけなくなりました。&lt;/p&gt;
+&lt;p&gt;今日（元旦）
+    
+    </summary>
+    
+      <category term="フロントエンド" scheme="http://simo.website/categories/%E3%83%95%E3%83%AD%E3%83%B3%E3%83%88%E3%82%A8%E3%83%B3%E3%83%89/"/>
+    
+    
+      <category term="JavaScript" scheme="http://simo.website/tags/JavaScript/"/>
+    
+      <category term="Tips" scheme="http://simo.website/tags/Tips/"/>
+    
+      <category term="日付操作" scheme="http://simo.website/tags/%E6%97%A5%E4%BB%98%E6%93%8D%E4%BD%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>あけましておめでとうございます</title>
+    <link href="http://simo.website/post/hello-new-year-2017/"/>
+    <id>http://simo.website/post/hello-new-year-2017/</id>
+    <published>2016-12-31T15:00:00.000Z</published>
+    <updated>2017-01-01T00:50:03.314Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="はじめまして"><a href="#はじめまして" class="headerlink" title="はじめまして"></a>はじめまして</h1><p><img src="./hello.png" alt="はじめまして"></p>
+<p>みなさん、はじめまして！この度、はてなの方からHexoへお引越しした<em>simochee</em>と申します。</p>
+<p>西の方の高専で制御系の学生をしています。情報系がしたくて高専に入ったのに、学科名詐欺にあって回路やマイコンをいじっています。<br>それでもプログラミングがしたかったので、ウェブ系に手を出してしまいました。結果、沼に溺れていってしまいましたとさ。</p>
+<p>はてなでも主にフロントエンドな記事を書いていました。同じようにトラブルの備忘録だったり、なんかしらの入門だったりを書いていくつもりです。</p>
+<p>この記事を見てくださる方がどれだけいらっしゃるかわかりませんが、なにかの記事が誰かのお役に立つことができれば、エンジニア冥利に尽きます。</p>
+<p>誤植やバグなどはできれば突っ込んでもらいたいです。よろしくお願いしますm(_ _)m</p>
+<h1 id="あけましておめでとうございます"><a href="#あけましておめでとうございます" class="headerlink" title="あけましておめでとうございます"></a>あけましておめでとうございます</h1><p><img src="./new_year.png" alt="あけましておめでとうございます"></p>
+<p>新年あけましておめでとうございます。<br>はじめましての後ですが、本年もどうぞよろしくお願いいたします。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;はじめまして&quot;&gt;&lt;a href=&quot;#はじめまして&quot; class=&quot;headerlink&quot; title=&quot;はじめまして&quot;&gt;&lt;/a&gt;はじめまして&lt;/h1&gt;&lt;p&gt;&lt;img src=&quot;./hello.png&quot; alt=&quot;はじめまして&quot;&gt;&lt;/p&gt;
+&lt;p&gt;みなさん、はじめまし
+    
+    </summary>
+    
+      <category term="未分類" scheme="http://simo.website/categories/%E6%9C%AA%E5%88%86%E9%A1%9E/"/>
+    
+    
+      <category term="日記" scheme="http://simo.website/tags/%E6%97%A5%E8%A8%98/"/>
+    
+  </entry>
+  
+</feed>
