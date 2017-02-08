@@ -994,12 +994,7 @@ ol {
   padding-top: 4px;
   border-bottom: 4px solid transparent;
 }
-.paginator-wrapper .paginator .page-number:not(.current):hover {
-  border-color: #d92926;
-  color: #d92926;
-}
 .paginator-wrapper .paginator .page-number.current {
-  background: #d92926;
   border-radius: 3px;
   line-height: 35px;
   color: #fff;
@@ -1025,7 +1020,6 @@ ol {
   height: 35px;
   line-height: 35px;
   font-size: 16px;
-  color: #d92926;
 }
 .paginator-wrapper .paginator .prev::before,
 .paginator-wrapper .paginator .next::before {
@@ -1053,7 +1047,7 @@ ol {
 }
 .adsense {
   clear: both;
-  display: none;
+  display: block;
 }
 .adsense.center {
   margin: 0 auto;
@@ -1472,54 +1466,65 @@ ol {
   }
 }
 .theme-accent__border-color {
-  border-color: #aaa !important;
+  border-color: #123456 !important;
 }
 .theme-accent__background-color {
-  background-color: #aaa !important;
+  background-color: #123456 !important;
 }
 .theme-accent__color {
-  color: #aaa !important;
+  color: #123456 !important;
 }
 .theme-accent__hover__color:hover {
-  color: #aaa !important;
+  color: #123456 !important;
 }
 .theme-accent__hover__background-color:hover {
-  background-color: #aaa !important;
+  background-color: #123456 !important;
 }
 .theme-accent__before__color::before {
-  color: #aaa;
+  color: #123456;
 }
 .theme-accent__before__background-color::before {
-  background-color: #aaa;
+  background-color: #123456;
 }
 .theme-accent__before__border-color::before {
-  border-color: #aaa !important;
+  border-color: #123456 !important;
 }
 .global-footer .dist-list li::before {
-  background: #aaa;
+  background: #123456;
+}
+.paginator-wrapper .paginator .page-number:not(.current):hover {
+  border-color: #123456;
+  color: #123456;
+}
+.paginator-wrapper .paginator .page-number.current {
+  background: #123456;
+}
+.paginator-wrapper .paginator .prev,
+.paginator-wrapper .paginator .next {
+  color: #123456;
 }
 .entry-post-content h1::before,
 .entry-post-content h1::after {
-  background: #aaa !important;
+  background: #123456 !important;
 }
 .entry-post-content h2::before {
-  background: #aaa !important;
+  background: #123456 !important;
 }
 .entry-post-content h3 {
-  border-color: #aaa !important;
+  border-color: #123456 !important;
 }
 .entry-post-content ul li::before {
-  background: #aaa !important;
-  border-color: #aaa !important;
+  background: #123456 !important;
+  border-color: #123456 !important;
 }
 .entry-post-content ol li::before {
-  color: #aaa !important;
+  color: #123456 !important;
 }
 .entry-post-content a:hover {
-  color: #aaa !important;
+  color: #123456 !important;
 }
 .entry-post-content em {
-  background-image: -webkit-linear-gradient(to bottom, transparent, transparent 60%, #ccc 60%, #ccc);
-  background-image: -o-linear-gradient(to bottom, transparent, transparent 60%, #ccc 60%, #ccc);
-  background-image: linear-gradient(to bottom, transparent, transparent 60%, #ccc 60%, #ccc);
+  background-image: -webkit-linear-gradient(to bottom, transparent, transparent 60%, #abcced 60%, #abcced);
+  background-image: -o-linear-gradient(to bottom, transparent, transparent 60%, #abcced 60%, #abcced);
+  background-image: linear-gradient(to bottom, transparent, transparent 60%, #abcced 60%, #abcced);
 }
