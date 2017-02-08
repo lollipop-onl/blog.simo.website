@@ -304,10 +304,10 @@ ol {
   float: left;
   width: 470px;
 }
-.entry.entry-col-2:nth-child(even) {
+.entry.entry-col-2:nth-child(odd) {
   margin-left: 10px;
 }
-.entry.entry-col-2:nth-child(odd) {
+.entry.entry-col-2:nth-child(even) {
   clear: both;
   margin-right: 10px;
 }
